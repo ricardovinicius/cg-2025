@@ -11,6 +11,8 @@
 
 #include <GL/gl.h>
 #include <GL/glut.h>
+
+#include <deque>
 #include <iostream>
 #include <valarray>
 
@@ -28,18 +30,23 @@ struct vertex_t {
 
 class Shape {
   public:
+  color_t color{};
   virtual ~Shape() = default;
   virtual void draw() = 0;
 };
 
 class Triangle final : public Shape {
-  color_t color{};
   vertex_t v1, v2, v3;
 
   public:
   Triangle(const color_t color, const vertex_t v1, const vertex_t v2,
           const vertex_t v3)
-    : color(color), v1(v1), v2(v2), v3(v3) {}
+    : Shape() {
+    this->color = color;
+    this->v1 = v1;
+    this->v2 = v2;
+    this->v3 = v3;
+  }
 
   void draw() override {
     glBegin(GL_TRIANGLES);
@@ -59,6 +66,21 @@ void init() {
 }
 
 vector<Shape*> shapes;
+deque<color_t> colors_queue;
+
+void animate(int value) {
+  for (int i = 1; i < shapes.size(); i++) {
+    shapes[i]->color = colors_queue[i % colors_queue.size()];
+  }
+
+  auto last = colors_queue.back();
+  colors_queue.pop_back();
+  colors_queue.push_front(last);
+
+  glutPostRedisplay();
+  glutTimerFunc(240, animate, 1);
+}
+
 
 void render() {
   glClear(GL_COLOR_BUFFER_BIT);
@@ -85,40 +107,43 @@ int main(int argc, char** argv) {
   float column_height = 200;
 
   color_t grey = {0.5, 0.5, 0.5};
-  auto grey_triangle = Triangle(grey, center,
+  auto triangle_base = Triangle(grey, center,
     {center.x + half_side, center.y - column_height, 0.0},
     {center.x - half_side, center.y - column_height, 0.0});
-  shapes.push_back(&grey_triangle);
+  shapes.push_back(&triangle_base);
 
   color_t red = {1.0, 0.0, 0.0};
-
-  auto red_triangle = Triangle(red, center,
-    {center.x + half_side, center.y + triangle_height, 0.0},
-    {center.x - half_side, center.y + triangle_height, 0.0});
-  shapes.push_back(&red_triangle);
-
   color_t green = {0.0, 1.0, 0.0};
-
-  auto green_triangle = Triangle(green, center,
-  {center.x + triangle_height, center.y + half_side, 0.0},
-  {center.x + triangle_height, center.y - half_side, 0.0});
-  shapes.push_back(&green_triangle);
-
   color_t blue = {0.0, 0.0, 1.0};
-
-  auto blue_triangle = Triangle(blue, center,
-  {center.x - triangle_height, center.y + half_side, 0.0},
-  {center.x - triangle_height, center.y - half_side, 0.0});
-  shapes.push_back(&blue_triangle);
-
   color_t white = {1.0, 1.0, 1.0};
 
-  auto white_triangle = Triangle(white, center,
+  colors_queue.push_back(red);
+  colors_queue.push_back(green);
+  colors_queue.push_back(blue);
+  colors_queue.push_back(white);
+
+  auto triangle_1 = Triangle(red, center,
+    {center.x + half_side, center.y + triangle_height, 0.0},
+    {center.x - half_side, center.y + triangle_height, 0.0});
+  shapes.push_back(&triangle_1);
+
+  auto triangle_2 = Triangle(green, center,
+  {center.x + triangle_height, center.y + half_side, 0.0},
+  {center.x + triangle_height, center.y - half_side, 0.0});
+  shapes.push_back(&triangle_2);
+
+  auto triangle_3 = Triangle(blue, center,
+  {center.x - triangle_height, center.y + half_side, 0.0},
+  {center.x - triangle_height, center.y - half_side, 0.0});
+  shapes.push_back(&triangle_3);
+
+  auto triangle_4 = Triangle(white, center,
   {center.x + half_side, center.y - triangle_height, 0.0},
   {center.x - half_side, center.y - triangle_height, 0.0});
-  shapes.push_back(&white_triangle);
+  shapes.push_back(&triangle_4);
 
   glutDisplayFunc(render);
+  glutTimerFunc(240, animate, 1);
 
   glutMainLoop();
   return 0;
