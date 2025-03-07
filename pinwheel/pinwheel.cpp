@@ -28,11 +28,24 @@ struct vertex_t {
   float x, y, z;
 };
 
+
+
 class Shape {
   public:
   color_t color{};
   virtual ~Shape() = default;
   virtual void draw() = 0;
+  virtual void rotate(float angle) = 0;
+
+  static vertex_t rotation_around_a_point_transform(const float angle, vertex_t v, float x_0, float y_0) {
+    float x_1 = v.x - x_0;
+    float y_1 = v.y - y_0;
+
+    v.x = (cos(angle) * x_1) - (sin(angle) * y_1) + x_0;
+    v.y = (sin(angle) * x_1) + (cos(angle) * y_1) + y_0;
+
+    return v;
+  }
 };
 
 class Triangle final : public Shape {
@@ -56,6 +69,12 @@ class Triangle final : public Shape {
       glVertex3f(v3.x, v3.y, v3.z);
     glEnd();
   }
+
+  void rotate(const float angle) override {
+    this->v1 = Shape::rotation_around_a_point_transform(angle, this->v1, v1.x, v1.y);
+    this->v2 = Shape::rotation_around_a_point_transform(angle, this->v2, v1.x, v1.y);
+    this->v3 = Shape::rotation_around_a_point_transform(angle, this->v3, v1.x, v1.y);
+  }
 };
 
 void init() {
@@ -67,18 +86,15 @@ void init() {
 
 vector<Shape*> shapes;
 deque<color_t> colors_queue;
+int rotation_direction = -1;
 
 void animate(int value) {
   for (int i = 1; i < shapes.size(); i++) {
-    shapes[i]->color = colors_queue[i % colors_queue.size()];
+    shapes[i]->rotate(0.1 * rotation_direction);
   }
 
-  auto last = colors_queue.back();
-  colors_queue.pop_back();
-  colors_queue.push_front(last);
-
   glutPostRedisplay();
-  glutTimerFunc(240, animate, 1);
+  glutTimerFunc(33, animate, 1);
 }
 
 
@@ -90,6 +106,16 @@ void render() {
   }
 
   glFlush();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+  cout << "key: " << key << endl;
+  if (key == 'a') {
+    rotation_direction = 1;
+  }
+  else if (key == 'd') {
+    rotation_direction = -1;
+  }
 }
 
 int main(int argc, char** argv) {
@@ -143,7 +169,8 @@ int main(int argc, char** argv) {
   shapes.push_back(&triangle_4);
 
   glutDisplayFunc(render);
-  glutTimerFunc(240, animate, 1);
+  glutTimerFunc(33, animate, 1);
+  glutKeyboardFunc(keyboard);
 
   glutMainLoop();
   return 0;
