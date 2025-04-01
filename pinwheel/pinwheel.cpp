@@ -61,6 +61,7 @@ class Triangle final : public Shape {
     this->v3 = v3;
   }
 
+
   void draw() override {
     glBegin(GL_TRIANGLES);
       glColor3f(color.r, color.g, color.b);
