@@ -45,8 +45,8 @@ Definição dos Polígonos
 
 static GLubyte fundoIndices[] = {0, 3, 2, 1};
 static GLubyte frenteIndices[] = {4, 6, 7, 5};
-static GLubyte direitaIndices[] = {0, 3, 5, 4};
-static GLubyte esquerdaIndices[] = {1, 2, 7, 6};
+static GLubyte esquerdaIndices[] = {5, 3, 0, 4};
+static GLubyte direitaIndices[] = {6, 1, 2, 7};
 static GLubyte topoIndices[] = {3, 5, 7, 2};
 static GLubyte baseIndices[] = {0, 1, 6, 4};
 
@@ -85,7 +85,7 @@ void init() {
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glOrtho(-50, 50, -50, 50, -50, 50);
   glEnable(GL_DEPTH_TEST);
-  // glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
 }
 
 void reshape(int w, int h) {
@@ -98,8 +98,8 @@ void display() {
   glPushMatrix();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glRotatef((GLfloat) eixo_y, 1.0, 0.0, 0.0);
-  glRotatef((GLfloat) eixo_x, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat) eixo_y, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat) eixo_x, 1.0, 0.0, 0.0);
 
   glEnableClientState(GL_VERTEX_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, vertices);
