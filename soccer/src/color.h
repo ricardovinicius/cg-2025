@@ -10,5 +10,6 @@ typedef struct {
 } Color;
 
 extern const Color COLOR_WHITE;
+extern const Color COLOR_BLUE;
 
 #endif //COLOR_H
