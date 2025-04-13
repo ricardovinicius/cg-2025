@@ -64,8 +64,10 @@ void bresenham_line(int x0, int y0, int x1, int y1) {
   }
 }
 
-void plot_if_in_arc(int px, int py, float angle, float start_rad, float end_rad) {
-  if (angle < 0) angle += 2.0f * M_PI;
+void plot_if_in_arc(int px, int py, float angle, float start_rad,
+                    float end_rad) {
+  if (angle < 0)
+    angle += 2.0f * M_PI;
 
   if (start_rad < end_rad) {
     if (angle >= start_rad && angle <= end_rad)
@@ -81,22 +83,29 @@ void bresenham_arc(int xc, int yc, int r, int start_angle, int end_angle) {
   int d = 3 - 2 * r;
 
   float start_rad = start_angle * M_PI / 180.0f;
-  float end_rad   = end_angle   * M_PI / 180.0f;
+  float end_rad = end_angle * M_PI / 180.0f;
 
   while (x <= y) {
     // Ângulo base do ponto (x, y)
     float angle = atan2((float)y, (float)x);
 
     // Oitantes por simetria (0 a 7), com adição de múltiplos de π/2
-    plot_if_in_arc(xc + x, yc + y, angle, start_rad, end_rad);             // 1º octante
-    plot_if_in_arc(xc - x, yc + y, M_PI - angle, start_rad, end_rad);      // 2º octante
-    plot_if_in_arc(xc - x, yc - y, M_PI + angle, start_rad, end_rad);      // 3º octante
-    plot_if_in_arc(xc + x, yc - y, 2 * M_PI - angle, start_rad, end_rad);  // 4º octante
+    plot_if_in_arc(xc + x, yc + y, angle, start_rad, end_rad); // 1º octante
+    plot_if_in_arc(xc - x, yc + y, M_PI - angle, start_rad, end_rad);
+    // 2º octante
+    plot_if_in_arc(xc - x, yc - y, M_PI + angle, start_rad, end_rad);
+    // 3º octante
+    plot_if_in_arc(xc + x, yc - y, 2 * M_PI - angle, start_rad, end_rad);
+    // 4º octante
 
-    plot_if_in_arc(xc + y, yc + x, M_PI_2 - angle, start_rad, end_rad);         // 5º octante
-    plot_if_in_arc(xc - y, yc + x, M_PI_2 + angle, start_rad, end_rad);         // 6º octante
-    plot_if_in_arc(xc - y, yc - x, 3 * M_PI_2 - angle, start_rad, end_rad);     // 7º octante
-    plot_if_in_arc(xc + y, yc - x, 3 * M_PI_2 + angle, start_rad, end_rad);     // 8º octante
+    plot_if_in_arc(xc + y, yc + x, M_PI_2 - angle, start_rad, end_rad);
+    // 5º octante
+    plot_if_in_arc(xc - y, yc + x, M_PI_2 + angle, start_rad, end_rad);
+    // 6º octante
+    plot_if_in_arc(xc - y, yc - x, 3 * M_PI_2 - angle, start_rad, end_rad);
+    // 7º octante
+    plot_if_in_arc(xc + y, yc - x, 3 * M_PI_2 + angle, start_rad, end_rad);
+    // 8º octante
 
     if (d < 0) {
       d += 4 * x + 6;
@@ -107,4 +116,3 @@ void bresenham_arc(int xc, int yc, int r, int start_angle, int end_angle) {
     x++;
   }
 }
-
