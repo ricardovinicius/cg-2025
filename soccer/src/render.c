@@ -3,9 +3,9 @@
 //
 
 #include "render.h"
+#include "color.h"
+#include "bresenham.h"
 
-#include <bresenham.h>
-#include <math.h>
 #include <GL/freeglut_std.h>
 #include <GL/gl.h>
 
@@ -28,7 +28,6 @@ void render_scene() {
   bresenham_line(10, 10, 20, 200);
   bresenham_arc(100, 100, 50, 0, 90);
   glEnd();
-
 
   glutSwapBuffers();
 }
