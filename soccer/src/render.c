@@ -23,7 +23,9 @@ static double last_time = 0;
 
 void render_init(int width, int height) {
   glEnable(GL_DEPTH_TEST);
-  glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   render_reshape(width, height);
 }
 
@@ -46,8 +48,8 @@ void render_update(void) {
 void render_display() {
   glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
-  gluLookAt(400, 200, 500,
-    400, 300, 0,
+  gluLookAt(400, 200, 460,
+    400, 280, 0,
     0, 1, 0);
 
   scene_render();

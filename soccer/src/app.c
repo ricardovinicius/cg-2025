@@ -7,6 +7,7 @@
 #include "render.h"
 #include "config.h"
 #include "scenes/game_scene.h"
+#include "scenes/menu_scene.h"
 
 void display() {
   render_display();
@@ -32,7 +33,8 @@ void app_init(int argc, char **argv) {
   render_init(800, 600);
 
   game_scene_init();
-  scene_set(&game_scene);
+  // scene_set(&game_scene);
+  scene_set(&menu_scene);
 
   input_init();
 

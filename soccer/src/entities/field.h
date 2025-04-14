@@ -5,6 +5,13 @@
 #ifndef FIELD_H
 #define FIELD_H
 
-void field_draw(void);
+typedef struct {
+    float x, y;
+    float width, height;
+} Field;
+
+void field_init(Field *field);
+void field_draw(Field *field);
+void field_background_draw(Field *field);
 
 #endif //FIELD_H

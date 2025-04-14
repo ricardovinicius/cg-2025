@@ -5,13 +5,17 @@
 #ifndef BALL_H
 #define BALL_H
 
+#include <texture.h>
+
 #include "../color.h"
 
 typedef struct {
   float x, y, z;
   float vx, vy, vz;
   int radius;
+  float rotation_angle;
   Color color;
+  Texture texture;
 } Ball;
 
 void ball_init(Ball *b);
