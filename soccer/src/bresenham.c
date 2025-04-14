@@ -7,7 +7,6 @@
 #include "bresenham.h"
 
 #include <math.h>
-#include <stdbool.h>
 
 void bresenham_line(int x0, int y0, int x1, int y1) {
   const int steep = abs(y1 - y0) > abs(x1 - x0);

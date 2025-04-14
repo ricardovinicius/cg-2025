@@ -19,6 +19,8 @@
 //   glMatrixMode(GL_MODELVIEW);
 // }
 
+static double last_time = 0;
+
 void render_init(int width, int height) {
   glEnable(GL_DEPTH_TEST);
   glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
@@ -31,6 +33,14 @@ void render_reshape(int w, int h) {
   glLoadIdentity();
   gluPerspective(60.0, (float) w / (float) h, 1.0, 1000.0);
   glMatrixMode(GL_MODELVIEW);
+}
+
+void render_update(void) {
+  double now = glutGet(GLUT_ELAPSED_TIME);
+  double delta_time = now - last_time;
+  last_time = now;
+
+  scene_update(delta_time);
 }
 
 void render_display() {

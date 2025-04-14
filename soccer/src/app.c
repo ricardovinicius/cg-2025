@@ -1,6 +1,7 @@
 #include <GL/glut.h>
 #include "app.h"
 
+#include <input.h>
 #include <scene.h>
 
 #include "render.h"
@@ -10,6 +11,15 @@
 void display() {
   render_display();
   glutSwapBuffers();
+}
+
+void update() {
+  render_update();
+  glutPostRedisplay();
+}
+
+void reshape(int w, int h) {
+  render_reshape(w, h);
 }
 
 void app_init(int argc, char **argv) {
@@ -24,8 +34,12 @@ void app_init(int argc, char **argv) {
   game_scene_init();
   scene_set(&game_scene);
 
+  input_init();
+
   // TODO: modularize this callback register
   glutDisplayFunc(display);
+  glutReshapeFunc(reshape);
+  glutIdleFunc(update);
 
   glutMainLoop();
 }

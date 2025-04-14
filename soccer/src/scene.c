@@ -14,9 +14,9 @@ void scene_set(Scene *scene) {
     current_scene->init();
 }
 
-void scene_update(void) {
+void scene_update(double delta_time) {
   if (current_scene && current_scene->update)
-    current_scene->update();
+    current_scene->update(delta_time);
 }
 
 void scene_render(void) {

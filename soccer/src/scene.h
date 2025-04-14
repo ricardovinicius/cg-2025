@@ -7,12 +7,12 @@
 
 typedef struct {
     void (*init)(void);
-    void (*update)(void);
+    void (*update)(double delta_time);
     void (*render)(void);
 } Scene;
 
 void scene_set(Scene *scene);
-void scene_update(void);
+void scene_update(double delta_time);
 void scene_render(void);
 
 #endif //SCENE_H

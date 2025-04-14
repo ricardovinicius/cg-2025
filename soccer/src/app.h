@@ -6,6 +6,5 @@
 #define APP_H
 
 void app_init(int argc, char **argv);
-void display();
 
 #endif //APP_H
