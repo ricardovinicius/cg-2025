@@ -2,8 +2,6 @@
 // Created by vinia on 4/13/2025.
 //
 
-#include <stdio.h>
-
 #include "game_scene.h"
 
 #include <math.h>
